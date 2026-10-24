@@ -32,6 +32,7 @@ The replication package enables reviewers and researchers to:
 │   └── individual_validation_source_sink.csv
 ├── README.md
 ├── MINER_SETUP.md
+├── LICENSE
 ```
 
 ## `cohort_data/`
@@ -375,9 +376,10 @@ A manually verified subset was used to evaluate classification performance, as d
 
 # License
 
-This replication package is released solely for research and reproducibility purposes accompanying the associated publication.
+* **Code** (`DSR_engine.py`, `verify_package.ipynb`): released under the **MIT License** -- see [`LICENSE`](./LICENSE).
+* **Data** (`cohort_data/`, `human_validation.csv`): released under **CC-BY 4.0** (https://creativecommons.org/licenses/by/4.0/).
 
-Repository URLs contained within the datasets refer to their original upstream open-source projects and remain subject to their respective licenses.
+Repository URLs contained within the datasets refer to their original upstream open-source projects and remain subject to their respective licenses; this package's license applies to our own derived datasets and code, not to the third-party code those URLs point to.
 
 ---
 
