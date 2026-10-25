@@ -45,9 +45,9 @@ This directory contains the validation datasets used for the ecosystem-scale eva
 
 - **`individual_validation_source_sink.csv`** — Method-level provenance relationships extracted from independently maintained open-source projects.
 
-Together, these three datasets comprise the 309-repository validation corpus used to evaluate the proposed License Compliance Debt (LCD) framework across diverse software ecosystem cohorts, totalling 107,208 method-level provenance relationships (45,472 corporate / 34,852 foundation / 26,884 individual) -- matching Table VI's category breakdown exactly (Category 1=15,901, Category 2=6,746, Category 3=13,123, Category 4=1,808, Category 5=44,804, Category 0=24,826).
+Together, these three datasets comprise the 309-repository validation corpus used to evaluate the proposed License Compliance Debt (LCD) framework across diverse software ecosystem cohorts, totalling 107,208 method-level provenance relationships (45,472 corporate / 34,852 foundation / 26,884 individual), matching Table VI's category breakdown exactly (Category 1=15,901, Category 2=6,746, Category 3=13,123, Category 4=1,808, Category 5=44,804, Category 0=24,826).
 
-**Columns**: `hash, source_project_id, sink_project_id, source_version, sink_version, source_license, sink_license, method_name, source_file_location, sink_file_location, source_repository_url, sink_repository_url, violation, automated_classifier_category`. Despite the column names, `source_repository_url`/`sink_repository_url` are full blob links down to the file and line (e.g. `.../blob/<sha>/path/to/file.c#L512`), not bare repository URLs -- `source_project_id`/`sink_project_id` are the only stable per-repository identifiers in the file and were kept for that reason even though they are opaque numeric IDs.
+**Columns**: `hash, source_project_id, sink_project_id, source_version, sink_version, source_license, sink_license, method_name, source_file_location, sink_file_location, source_repository_url, sink_repository_url, violation, automated_classifier_category`. Despite the column names, `source_repository_url`/`sink_repository_url` are full blob links down to the file and line (e.g. `.../blob/<sha>/path/to/file.c#L512`), not bare repository URLs. `source_project_id`/`sink_project_id` are the only stable per-repository identifiers in the file, and were kept for that reason even though they are opaque numeric IDs.
 
 ---
 
@@ -63,7 +63,7 @@ Jupyter notebook demonstrating the complete verification workflow, in two parts:
 * **Table VI** (ecosystem feasibility results): loads the three `cohort_data/*.csv` files,
   aggregates per cohort (Corporate/OSS Fdn./Individual) and in total, and reproduces the paper's
   309-repository, 107,208-method LCD classification breakdown and $LCD_{\text{density}}$ figures
-  exactly -- recomputed directly from the shipped data, not hardcoded.
+  exactly, recomputed directly from the shipped data rather than hardcoded.
 
 This notebook serves as the primary entry point for reproducing the experimental results.
 
@@ -86,9 +86,9 @@ The matrix's pairwise license relationships (`COMPATIBILITY_GROUPS`, `FLOW_HIERA
 `INCOMPATIBILITIES`, `EXPLICIT_COMPATIBILITIES`) are grounded in the lattice-based restrictiveness
 formalism of Moreau et al. and the SPDX-based reachability logic of Kapitsaki et al. (both cited
 in the paper), but had not previously been spot-checked against an independent authoritative
-source. The table below checks 30 representative pairs -- spanning identity, permissive,
+source. The table below checks 30 representative pairs, spanning identity, permissive,
 weak-copyleft, strong-copyleft, version-silo, and defensive-category cases, with particular
-attention to the matrix's hardcoded exceptions -- against FSF's GPL Compatibility List and the
+attention to the matrix's hardcoded exceptions, against FSF's GPL Compatibility List and the
 license texts themselves.
 
 | # | Source | Sink | DSR Category | Authoritative determination | Agreement |
@@ -106,18 +106,18 @@ license texts themselves.
 | 11 | Apache-2.0 | AGPL-3.0-only | 2 (Compatible) | Same basis as GPLv3 compatibility | Confirmed |
 | 12 | LGPL-2.1-only | GPL-2.0-only | 2 (Compatible) | LGPL is explicitly designed to allow this | Confirmed |
 | 13 | LGPL-3.0-only | GPL-3.0-only | 2 (Compatible) | Same, LGPLv3 into GPLv3 | Confirmed |
-| 14 | MPL-2.0 | GPL-2.0-only | 3 (Incompatible) | **Nuance** -- see note below | Documented, 0 rows affected |
-| 15 | MPL-2.0 | GPL-3.0-only | 3 (Incompatible) | **Nuance** -- see note below | Documented, 0 rows affected |
+| 14 | MPL-2.0 | GPL-2.0-only | 3 (Incompatible) | **Nuance:** see note below | Documented, 0 rows affected |
+| 15 | MPL-2.0 | GPL-3.0-only | 3 (Incompatible) | **Nuance:** see note below | Documented, 0 rows affected |
 | 16 | MPL-2.0 | Apache-2.0 | 2 (Compatible) | Permitted under MPL's "Larger Work" provision | Confirmed |
 | 17 | MPL-2.0 | LGPL-2.1-only | 2 (Compatible) | Explicitly named in MPL's Secondary License clause | Confirmed |
 | 18 | GPL-2.0-only | GPL-3.0-only | 3 (Incompatible) | Version silo: GPLv2-only cannot combine with GPLv3-only | Confirmed |
 | 19 | GPL-3.0-only | GPL-2.0-only | 3 (Incompatible) | Same, reverse direction | Confirmed |
 | 20 | GPL-2.0-or-later | GPL-3.0-only | 2 (Compatible) | The "or-later" clause exists specifically to permit this | Confirmed |
 | 21 | LGPL-2.1-only | LGPL-3.0-only | 3 (Incompatible) | Same version-silo logic as GPL | Confirmed |
-| 22 | AGPL-3.0-only | GPL-3.0-only | 2 (Compatible) | **Nuance** -- see note below | Documented, 0 rows affected |
+| 22 | AGPL-3.0-only | GPL-3.0-only | 2 (Compatible) | **Nuance:** see note below | Documented, 0 rows affected |
 | 23 | GPL-3.0-only | AGPL-3.0-only | 2 (Compatible) | Same cross-permission; this direction is cleaner since the sink's own (more restrictive) terms already govern | Confirmed |
 | 24 | MIT | CC-BY-NC-4.0 | 3 (Incompatible) | Reasonable conservative default; CC licenses are not intended for software and carry non-commercial restrictions MIT does not | Confirmed |
-| 25 | MIT | Proprietary | 3 (Incompatible) | Deliberately conservative: a confidently-known source's specific requirements (e.g. attribution) cannot be verified as satisfied by an opaque sink -- correctly flagged for review rather than cleared | Confirmed |
+| 25 | MIT | Proprietary | 3 (Incompatible) | Deliberately conservative: a confidently-known source's specific requirements (e.g. attribution) cannot be verified as satisfied by an opaque sink, so it is correctly flagged for review rather than cleared | Confirmed |
 | 26 | Apache-2.0 | Proprietary | 3 (Incompatible) | Same reasoning as above | Confirmed |
 | 27 | Proprietary | MIT | 4 (Active-Risk) | Reverse direction: a genuine IP-leak risk signal | Confirmed |
 | 28 | Unknown | Apache-2.0 | 5 (Latent) | No source provenance information at all | Confirmed |
@@ -129,21 +129,21 @@ any row in this corpus:**
 
 * **MPL-2.0 -> GPL-2.0/GPL-3.0 (rows 14-15)**: MPL-2.0's own Secondary License clause permits this
   combination by default, unless a per-file "Incompatible With Secondary Licenses" notice is
-  present -- a per-file flag this corpus's data model does not capture, so the matrix's blanket
+  present; this is a per-file flag this corpus's data model does not capture, so the matrix's blanket
   rule is conservative rather than wrong. 0 rows in this corpus involve this pair.
 * **AGPL-3.0-only <-> GPL-3.0-only (row 22)**: combination is explicitly permitted (GPLv3 Section 13
   grants this cross-permission), but the resulting combined work also inherits AGPL's
-  network-disclosure obligation -- a layered requirement the matrix's flat Category 2 label does
+  network-disclosure obligation, a layered requirement the matrix's flat Category 2 label does
   not surface. 0 rows in this corpus involve this pair.
 
 **On rows 24-26 (Permissive source into a `Custom`/`Proprietary`/non-commercial-restricted sink)**:
-these may look like a design flaw at first glance -- permissive licenses explicitly permit
+these may look like a design flaw at first glance, since permissive licenses explicitly permit
 relicensing into more restrictive terms, including proprietary ones. But the matrix's
 risk-first design treats this correctly: when the sink's own terms are non-standard, unknown, or
 closed, the specific requirements a confidently-known permissive source still carries (attribution,
 notice preservation) cannot be verified as satisfied. The matrix already handles symmetric
 uncertainty (e.g. row 29, `Custom`->`Custom`) as Category 5 "Latent Debt"; rows 24-26 are
-asymmetric -- one side is fully known -- which is exactly the condition under which flagging for
+asymmetric, with only one side fully known, which is exactly the condition under which flagging for
 review, rather than silently clearing the pair, is the correct conservative choice. This pattern is
 common in the corpus (2,353 rows: a known-permissive source into a `Custom`/`Other`-detected
 sink) and was deliberately re-examined for this reason; all are confirmed correctly classified.
@@ -168,7 +168,7 @@ the paper's Table IV.
 | Column | Type | Description |
 | --- | --- | --- |
 | `resolution_category` | Integer (1-5) | The row's final, reviewer-confirmed category. Populated for all 1,935 rows. |
-| `resolution_method` | String | How the row was resolved -- see table below. |
+| `resolution_method` | String | How the row was resolved; see table below. |
 | `pending_review_note` | String | Plain-language note explaining the resolution, especially for rows not resolved by simple unanimous agreement. |
 
 ### How `human_validation.csv` was built
@@ -181,7 +181,7 @@ mechanism to investigate a counterintuitive label, so Category 4 was reflexively
 round 1 (0% agreement across all 341 cases) despite its underlying rule being sound. Round 2 asked
 reviewers to independently assign their own category for every disputed pair, informed by live
 verification of the underlying repository and license metadata, rather than accepting or
-rejecting a suggestion -- resolving all 1,935 rows into the final `resolution_category`, with
+rejecting a suggestion. This resolved all 1,935 rows into the final `resolution_category`, with
 96--100% reviewer agreement across every disputed subset. Per-pair resolution records, including
 how each case was resolved and why, are in `resolution_method`/`pending_review_note` (value counts
 below).
@@ -198,13 +198,13 @@ documented here since the paper itself doesn't have room to state them in this m
    violated.
 2. **Risk-first principle (Category 4): symmetric uncertainty is treated as active risk.** When
    *both* sides are unverified (source license `Unknown`/`Unlicensed` AND sink license
-   `Custom`/`Proprietary`), the pair is Category 4, not Category 5 -- not knowing what the sink's
+   `Custom`/`Proprietary`), the pair is Category 4, not Category 5: not knowing what the sink's
    terms actually permit is itself the risk signal. This rule is what `DSR_engine.py`'s own
    high-risk check implements, and reviewers confirmed it directly (96.1% round-2 agreement on the
    258 re-judged Category 4 cases), reversing round 1's misleadingly alarming 0% figure.
 3. **Symmetric uncertainty, not partial uncertainty, is what triggers Category 4.** If the source
    is `Unknown` but the sink license is a *confirmed, known* permissive license (not `Custom`),
-   the pair is Category 5 (Latent Debt), not Category 4 -- one side being confirmed-open breaks the
+   the pair is Category 5 (Latent Debt), not Category 4, since one side being confirmed-open breaks the
    risk-first reasoning, which depends on uncertainty on *both* sides. This was the single
    highest-volume rule in round 2, and reviewers confirmed it unanimously.
 4. **A confirmed structural incompatibility is not overridden by one side being `Custom`.** A
@@ -287,9 +287,9 @@ Together with the corporate and foundation datasets, this corpus forms the valid
 
 # Illustrative Usage: The Mining and Classification Pipeline
 
-The datasets in this package (`cohort_data/`, `human_validation.csv`) are the output of a two-stage pipeline: a method-level mining/indexing stage that builds the provenance index these datasets are drawn from, and the classification stage (`DSR_engine.py`, included in full in this package) that assigns the LCD categories. The mining/indexing stage's own source code is not included here, but its operational model — CLI usage, credential policy, hashing, and revisit behavior — is documented in **[`MINER_SETUP.md`](./MINER_SETUP.md)**, shared across this project's companion replication packages so the description stays identical everywhere it appears.
+The datasets in this package (`cohort_data/`, `human_validation.csv`) are the output of a two-stage pipeline: a method-level mining/indexing stage that builds the provenance index these datasets are drawn from, and the classification stage (`DSR_engine.py`, included in full in this package) that assigns the LCD categories. The mining/indexing stage's own source code is not included here, but its operational model (CLI usage, credential policy, hashing, and revisit behavior) is documented in **[`MINER_SETUP.md`](./MINER_SETUP.md)**, shared across this project's companion replication packages so the description stays identical everywhere it appears.
 
-`DSR_engine.py`, included in full here, takes each mined source/sink license pair and assigns the LCD category (the `hash` column in `cohort_data/` and `human_validation.csv` is the structural signature `MINER_SETUP.md` describes) -- this classification step is completely reproducible from this package alone; only the upstream mining/indexing step requires the credentials `MINER_SETUP.md` describes. `verify_package.ipynb` reproduces the classification and validation statistics directly from the included datasets without needing either credential. Note also that `source_version`/`sink_version` are mining-time snapshot timestamps, not per-commit VCS timestamps -- see `MINER_SETUP.md`'s revisit-behavior note and the paper's methodology section.
+`DSR_engine.py`, included in full here, takes each mined source/sink license pair and assigns the LCD category (the `hash` column in `cohort_data/` and `human_validation.csv` is the structural signature `MINER_SETUP.md` describes). This classification step is completely reproducible from this package alone; only the upstream mining/indexing step requires the credentials `MINER_SETUP.md` describes. `verify_package.ipynb` reproduces the classification and validation statistics directly from the included datasets without needing either credential. Note also that `source_version`/`sink_version` are mining-time snapshot timestamps, not per-commit VCS timestamps; see `MINER_SETUP.md`'s revisit-behavior note and the paper's methodology section.
 
 ---
 
@@ -376,7 +376,7 @@ A manually verified subset was used to evaluate classification performance, as d
 
 # License
 
-* **Code** (`DSR_engine.py`, `verify_package.ipynb`): released under the **MIT License** -- see [`LICENSE`](./LICENSE).
+* **Code** (`DSR_engine.py`, `verify_package.ipynb`): released under the **MIT License** (see [`LICENSE`](./LICENSE)).
 * **Data** (`cohort_data/`, `human_validation.csv`): released under **CC-BY 4.0** (https://creativecommons.org/licenses/by/4.0/).
 
 Repository URLs contained within the datasets refer to their original upstream open-source projects and remain subject to their respective licenses; this package's license applies to our own derived datasets and code, not to the third-party code those URLs point to.

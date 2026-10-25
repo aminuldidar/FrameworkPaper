@@ -24,4 +24,4 @@ SOFTWARE.
 
 This license applies to the code in this repository (DSR_engine.py,
 verify_package.ipynb). The datasets (cohort_data/, human_validation.csv) are
-released separately under CC-BY 4.0 -- see the "License" section of README.md.
+released separately under CC-BY 4.0; see the "License" section of README.md.
